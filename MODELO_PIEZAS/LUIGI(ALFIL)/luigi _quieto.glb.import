@@ -4,12 +4,12 @@ importer="scene"
 importer_version=1
 type="PackedScene"
 uid="uid://2nyg00t1pca"
-path="res://.godot/imported/luigi _quieto.glb-574d2212eb9399ba1744808df8871940.scn"
+path="res://.godot/imported/luigi _quieto.glb-a247d245193355ecbc577eabdf832a92.scn"
 
 [deps]
 
-source_file="res://MODELOS_PIEZAS/LUIGI(ALFIL)/luigi _quieto.glb"
-dest_files=["res://.godot/imported/luigi _quieto.glb-574d2212eb9399ba1744808df8871940.scn"]
+source_file="res://MODELO_PIEZAS/LUIGI(ALFIL)/luigi _quieto.glb"
+dest_files=["res://.godot/imported/luigi _quieto.glb-a247d245193355ecbc577eabdf832a92.scn"]
 
 [params]
 

@@ -3,7 +3,7 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://brkd2v2sippul"
-path.s3tc="res://.godot/imported/luigi _quieto_luigibody_n.png-4429360a9adc8c7d58578c6039d24ed0.s3tc.ctex"
+path.s3tc="res://.godot/imported/luigi _quieto_luigibody_n.png-934c5a6e277faed3fe8fdf11221c0891.s3tc.ctex"
 metadata={
 "imported_formats": ["s3tc_bptc"],
 "vram_texture": true
@@ -14,8 +14,8 @@ generator_parameters={
 
 [deps]
 
-source_file="res://MODELOS_PIEZAS/LUIGI(ALFIL)/luigi _quieto_luigibody_n.png"
-dest_files=["res://.godot/imported/luigi _quieto_luigibody_n.png-4429360a9adc8c7d58578c6039d24ed0.s3tc.ctex"]
+source_file="res://MODELO_PIEZAS/LUIGI(ALFIL)/luigi _quieto_luigibody_n.png"
+dest_files=["res://.godot/imported/luigi _quieto_luigibody_n.png-934c5a6e277faed3fe8fdf11221c0891.s3tc.ctex"]
 
 [params]
 

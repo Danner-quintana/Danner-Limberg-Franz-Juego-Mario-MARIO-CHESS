@@ -3,7 +3,7 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://l572unthl5x8"
-path.s3tc="res://.godot/imported/luigi _quieto_LuigiEyePupil_mtl-LuigiEyePupil_rgh.png-5b361bbbe3a5fd84b1a5d917ea9926f1.s3tc.ctex"
+path.s3tc="res://.godot/imported/luigi _quieto_LuigiEyePupil_mtl-LuigiEyePupil_rgh.png-c1501ecb7df8e52e2e73c5c4082759db.s3tc.ctex"
 metadata={
 "imported_formats": ["s3tc_bptc"],
 "vram_texture": true
@@ -14,8 +14,8 @@ generator_parameters={
 
 [deps]
 
-source_file="res://MODELOS_PIEZAS/LUIGI(ALFIL)/luigi _quieto_LuigiEyePupil_mtl-LuigiEyePupil_rgh.png"
-dest_files=["res://.godot/imported/luigi _quieto_LuigiEyePupil_mtl-LuigiEyePupil_rgh.png-5b361bbbe3a5fd84b1a5d917ea9926f1.s3tc.ctex"]
+source_file="res://MODELO_PIEZAS/LUIGI(ALFIL)/luigi _quieto_LuigiEyePupil_mtl-LuigiEyePupil_rgh.png"
+dest_files=["res://.godot/imported/luigi _quieto_LuigiEyePupil_mtl-LuigiEyePupil_rgh.png-c1501ecb7df8e52e2e73c5c4082759db.s3tc.ctex"]
 
 [params]
 

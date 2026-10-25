@@ -3,7 +3,7 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://ccajg205sofq8"
-path.s3tc="res://.godot/imported/Mario quieto_MarioHairFace_nrm.png-3400d13dba6454f106c8a6dac5422213.s3tc.ctex"
+path.s3tc="res://.godot/imported/Mario quieto_MarioHairFace_nrm.png-d43d118d155fde3585f6fa973ae80c62.s3tc.ctex"
 metadata={
 "imported_formats": ["s3tc_bptc"],
 "vram_texture": true
@@ -14,8 +14,8 @@ generator_parameters={
 
 [deps]
 
-source_file="res://MODELOS_PIEZAS/MARIO(REY)/Mario quieto_MarioHairFace_nrm.png"
-dest_files=["res://.godot/imported/Mario quieto_MarioHairFace_nrm.png-3400d13dba6454f106c8a6dac5422213.s3tc.ctex"]
+source_file="res://MODELO_PIEZAS/MARIO(REY)/Mario quieto_MarioHairFace_nrm.png"
+dest_files=["res://.godot/imported/Mario quieto_MarioHairFace_nrm.png-d43d118d155fde3585f6fa973ae80c62.s3tc.ctex"]
 
 [params]
 

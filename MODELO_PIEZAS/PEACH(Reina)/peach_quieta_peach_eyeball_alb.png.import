@@ -3,7 +3,7 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://bepvnlbi57mm1"
-path.s3tc="res://.godot/imported/peach_quieta_peach_eyeball_alb.png-1ceb8a9494337a01a61b442a7bfbe2f9.s3tc.ctex"
+path.s3tc="res://.godot/imported/peach_quieta_peach_eyeball_alb.png-00ceb855bcb5e999a0189ba002f09613.s3tc.ctex"
 metadata={
 "imported_formats": ["s3tc_bptc"],
 "vram_texture": true
@@ -14,8 +14,8 @@ generator_parameters={
 
 [deps]
 
-source_file="res://MODELOS_PIEZAS/PEACH(Reina)/peach_quieta_peach_eyeball_alb.png"
-dest_files=["res://.godot/imported/peach_quieta_peach_eyeball_alb.png-1ceb8a9494337a01a61b442a7bfbe2f9.s3tc.ctex"]
+source_file="res://MODELO_PIEZAS/PEACH(Reina)/peach_quieta_peach_eyeball_alb.png"
+dest_files=["res://.godot/imported/peach_quieta_peach_eyeball_alb.png-00ceb855bcb5e999a0189ba002f09613.s3tc.ctex"]
 
 [params]
 

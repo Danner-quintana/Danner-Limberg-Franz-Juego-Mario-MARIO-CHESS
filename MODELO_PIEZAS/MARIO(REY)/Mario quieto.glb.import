@@ -4,12 +4,12 @@ importer="scene"
 importer_version=1
 type="PackedScene"
 uid="uid://ctdtabn77x55q"
-path="res://.godot/imported/Mario quieto.glb-30ccdba0ae89b669c388d7b76643c14f.scn"
+path="res://.godot/imported/Mario quieto.glb-017bf76172ac399912a0ff5543a70965.scn"
 
 [deps]
 
-source_file="res://MODELOS_PIEZAS/MARIO(REY)/Mario quieto.glb"
-dest_files=["res://.godot/imported/Mario quieto.glb-30ccdba0ae89b669c388d7b76643c14f.scn"]
+source_file="res://MODELO_PIEZAS/MARIO(REY)/Mario quieto.glb"
+dest_files=["res://.godot/imported/Mario quieto.glb-017bf76172ac399912a0ff5543a70965.scn"]
 
 [params]
 

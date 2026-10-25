@@ -3,7 +3,7 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://j56sjicjshqu"
-path.s3tc="res://.godot/imported/peach_quieta_peach_hair_nml.png-fe7692e4d0841b2610c02349506c30ee.s3tc.ctex"
+path.s3tc="res://.godot/imported/peach_quieta_peach_hair_nml.png-1c3dec84caa7dc4eb105e53df2f6e610.s3tc.ctex"
 metadata={
 "imported_formats": ["s3tc_bptc"],
 "vram_texture": true
@@ -14,8 +14,8 @@ generator_parameters={
 
 [deps]
 
-source_file="res://MODELOS_PIEZAS/PEACH(Reina)/peach_quieta_peach_hair_nml.png"
-dest_files=["res://.godot/imported/peach_quieta_peach_hair_nml.png-fe7692e4d0841b2610c02349506c30ee.s3tc.ctex"]
+source_file="res://MODELO_PIEZAS/PEACH(Reina)/peach_quieta_peach_hair_nml.png"
+dest_files=["res://.godot/imported/peach_quieta_peach_hair_nml.png-1c3dec84caa7dc4eb105e53df2f6e610.s3tc.ctex"]
 
 [params]
 

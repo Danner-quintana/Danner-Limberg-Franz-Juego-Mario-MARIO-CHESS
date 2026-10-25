@@ -4,12 +4,12 @@ importer="scene"
 importer_version=1
 type="PackedScene"
 uid="uid://bs3dkljlioi2d"
-path="res://.godot/imported/Browser_quieto.glb-acffb0a049c45cf74388aed1a91bc654.scn"
+path="res://.godot/imported/Browser_quieto.glb-e6b1ef551f9c9192bd09f3b2b96e0975.scn"
 
 [deps]
 
-source_file="res://MODELOS_PIEZAS/BROWSER(REY)_IA/Browser_quieto.glb"
-dest_files=["res://.godot/imported/Browser_quieto.glb-acffb0a049c45cf74388aed1a91bc654.scn"]
+source_file="res://MODELO_PIEZAS/BROWSER(REY)_IA/Browser_quieto.glb"
+dest_files=["res://.godot/imported/Browser_quieto.glb-e6b1ef551f9c9192bd09f3b2b96e0975.scn"]
 
 [params]
 

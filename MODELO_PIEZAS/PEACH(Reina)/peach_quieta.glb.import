@@ -4,12 +4,12 @@ importer="scene"
 importer_version=1
 type="PackedScene"
 uid="uid://b1ixs0l7kxkm3"
-path="res://.godot/imported/peach_quieta.glb-e295b73bf7fb7a6af0047ae932af2d48.scn"
+path="res://.godot/imported/peach_quieta.glb-dfef6a5e4c55b1805cc20c5c5e55583a.scn"
 
 [deps]
 
-source_file="res://MODELOS_PIEZAS/PEACH(Reina)/peach_quieta.glb"
-dest_files=["res://.godot/imported/peach_quieta.glb-e295b73bf7fb7a6af0047ae932af2d48.scn"]
+source_file="res://MODELO_PIEZAS/PEACH(Reina)/peach_quieta.glb"
+dest_files=["res://.godot/imported/peach_quieta.glb-dfef6a5e4c55b1805cc20c5c5e55583a.scn"]
 
 [params]
 

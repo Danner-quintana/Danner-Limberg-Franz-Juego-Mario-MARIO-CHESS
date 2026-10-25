@@ -3,7 +3,7 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://cspvo485hppio"
-path.s3tc="res://.godot/imported/luigi _quieto_LuigiFace_nrm.png-ac7d8c139b0d84c0dd70256a6f1bcc89.s3tc.ctex"
+path.s3tc="res://.godot/imported/luigi _quieto_LuigiFace_nrm.png-3ccf30d83e20f0f9a92172d864fc3168.s3tc.ctex"
 metadata={
 "imported_formats": ["s3tc_bptc"],
 "vram_texture": true
@@ -14,8 +14,8 @@ generator_parameters={
 
 [deps]
 
-source_file="res://MODELOS_PIEZAS/LUIGI(ALFIL)/luigi _quieto_LuigiFace_nrm.png"
-dest_files=["res://.godot/imported/luigi _quieto_LuigiFace_nrm.png-ac7d8c139b0d84c0dd70256a6f1bcc89.s3tc.ctex"]
+source_file="res://MODELO_PIEZAS/LUIGI(ALFIL)/luigi _quieto_LuigiFace_nrm.png"
+dest_files=["res://.godot/imported/luigi _quieto_LuigiFace_nrm.png-3ccf30d83e20f0f9a92172d864fc3168.s3tc.ctex"]
 
 [params]
 

@@ -3,7 +3,7 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://drwrh7h80hwnw"
-path.s3tc="res://.godot/imported/Mario quieto_MarioEyeBall_alb.png-22b84428e0de69adc26b4fc49f065f48.s3tc.ctex"
+path.s3tc="res://.godot/imported/Mario quieto_MarioEyeBall_alb.png-1dd91116d41a87a351e178a184cfe9c6.s3tc.ctex"
 metadata={
 "imported_formats": ["s3tc_bptc"],
 "vram_texture": true
@@ -14,8 +14,8 @@ generator_parameters={
 
 [deps]
 
-source_file="res://MODELOS_PIEZAS/MARIO(REY)/Mario quieto_MarioEyeBall_alb.png"
-dest_files=["res://.godot/imported/Mario quieto_MarioEyeBall_alb.png-22b84428e0de69adc26b4fc49f065f48.s3tc.ctex"]
+source_file="res://MODELO_PIEZAS/MARIO(REY)/Mario quieto_MarioEyeBall_alb.png"
+dest_files=["res://.godot/imported/Mario quieto_MarioEyeBall_alb.png-1dd91116d41a87a351e178a184cfe9c6.s3tc.ctex"]
 
 [params]
 

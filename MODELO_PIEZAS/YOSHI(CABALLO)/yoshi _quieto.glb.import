@@ -4,12 +4,12 @@ importer="scene"
 importer_version=1
 type="PackedScene"
 uid="uid://clcyimq67bjso"
-path="res://.godot/imported/yoshi _quieto.glb-827e8971a4f5dbb37029447a91e7e034.scn"
+path="res://.godot/imported/yoshi _quieto.glb-cfe925dd9775e61fda1fd1a031a97344.scn"
 
 [deps]
 
-source_file="res://MODELOS_PIEZAS/YOSHI(CABALLO)/yoshi _quieto.glb"
-dest_files=["res://.godot/imported/yoshi _quieto.glb-827e8971a4f5dbb37029447a91e7e034.scn"]
+source_file="res://MODELO_PIEZAS/YOSHI(CABALLO)/yoshi _quieto.glb"
+dest_files=["res://.godot/imported/yoshi _quieto.glb-cfe925dd9775e61fda1fd1a031a97344.scn"]
 
 [params]
 

@@ -3,7 +3,7 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://dmuylvk7om8c1"
-path.s3tc="res://.godot/imported/Mario quieto_MarioHand_nrm.png-e9f8f7b1ce2ae5b039692950620bfbc4.s3tc.ctex"
+path.s3tc="res://.godot/imported/Mario quieto_MarioHand_nrm.png-2d4cfd15b926f92569076684a0ec6e63.s3tc.ctex"
 metadata={
 "imported_formats": ["s3tc_bptc"],
 "vram_texture": true
@@ -14,8 +14,8 @@ generator_parameters={
 
 [deps]
 
-source_file="res://MODELOS_PIEZAS/MARIO(REY)/Mario quieto_MarioHand_nrm.png"
-dest_files=["res://.godot/imported/Mario quieto_MarioHand_nrm.png-e9f8f7b1ce2ae5b039692950620bfbc4.s3tc.ctex"]
+source_file="res://MODELO_PIEZAS/MARIO(REY)/Mario quieto_MarioHand_nrm.png"
+dest_files=["res://.godot/imported/Mario quieto_MarioHand_nrm.png-2d4cfd15b926f92569076684a0ec6e63.s3tc.ctex"]
 
 [params]
 

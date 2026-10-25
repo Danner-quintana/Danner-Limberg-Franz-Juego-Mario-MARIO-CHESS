@@ -3,7 +3,7 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://w0j053wxhedm"
-path.s3tc="res://.godot/imported/Mario quieto_MarioCap_alb.png-2f6d1592c5100f858bf46142e6a1a59a.s3tc.ctex"
+path.s3tc="res://.godot/imported/Mario quieto_MarioCap_alb.png-f68be264f9b46f756f3596b406578764.s3tc.ctex"
 metadata={
 "imported_formats": ["s3tc_bptc"],
 "vram_texture": true
@@ -14,8 +14,8 @@ generator_parameters={
 
 [deps]
 
-source_file="res://MODELOS_PIEZAS/MARIO(REY)/Mario quieto_MarioCap_alb.png"
-dest_files=["res://.godot/imported/Mario quieto_MarioCap_alb.png-2f6d1592c5100f858bf46142e6a1a59a.s3tc.ctex"]
+source_file="res://MODELO_PIEZAS/MARIO(REY)/Mario quieto_MarioCap_alb.png"
+dest_files=["res://.godot/imported/Mario quieto_MarioCap_alb.png-f68be264f9b46f756f3596b406578764.s3tc.ctex"]
 
 [params]
 

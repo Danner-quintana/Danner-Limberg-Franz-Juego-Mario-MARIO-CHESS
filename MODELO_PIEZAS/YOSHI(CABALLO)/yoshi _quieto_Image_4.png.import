@@ -3,7 +3,7 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://blwx75qc5o6j8"
-path.s3tc="res://.godot/imported/yoshi _quieto_Image_4.png-5522669a07426083e84cc5b996c0f60e.s3tc.ctex"
+path.s3tc="res://.godot/imported/yoshi _quieto_Image_4.png-37b7ae898613152b3a91075063c53d4b.s3tc.ctex"
 metadata={
 "imported_formats": ["s3tc_bptc"],
 "vram_texture": true
@@ -14,8 +14,8 @@ generator_parameters={
 
 [deps]
 
-source_file="res://MODELOS_PIEZAS/YOSHI(CABALLO)/yoshi _quieto_Image_4.png"
-dest_files=["res://.godot/imported/yoshi _quieto_Image_4.png-5522669a07426083e84cc5b996c0f60e.s3tc.ctex"]
+source_file="res://MODELO_PIEZAS/YOSHI(CABALLO)/yoshi _quieto_Image_4.png"
+dest_files=["res://.godot/imported/yoshi _quieto_Image_4.png-37b7ae898613152b3a91075063c53d4b.s3tc.ctex"]
 
 [params]
 
