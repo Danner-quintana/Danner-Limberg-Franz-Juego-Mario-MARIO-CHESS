@@ -1,0 +1,75 @@
+[gd_scene format=3 uid="uid://dihtwgvgqghx4"]
+
+[ext_resource type="Script" uid="uid://hhr7xr0i0ski" path="res://scripts/menu_pausa.gd" id="1_jd2x8"]
+
+[node name="MenuPausa" type="CanvasLayer" unique_id=630797558]
+script = ExtResource("1_jd2x8")
+
+[node name="Oscurecer" type="ColorRect" parent="." unique_id=1053480570]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0, 0, 0, 0.6)
+
+[node name="Botones" type="VBoxContainer" parent="." unique_id=873223341]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -66.5
+offset_top = -64.0
+offset_right = 66.5
+offset_bottom = 64.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 4
+
+[node name="Titulo" type="Label" parent="Botones" unique_id=817604480]
+layout_mode = 2
+text = "PAUSED"
+
+[node name="BtnContinuar" type="Button" parent="Botones" unique_id=865473906]
+layout_mode = 2
+text = "Resume"
+
+[node name="BtnGuardar" type="Button" parent="Botones" unique_id=315518378]
+layout_mode = 2
+text = "Save Game"
+
+[node name="BtnCargar" type="Button" parent="Botones" unique_id=915666949]
+layout_mode = 2
+text = "Load Game"
+
+[node name="BtnMenu" type="Button" parent="Botones" unique_id=243939201]
+layout_mode = 2
+text = "Main Menu"
+
+[node name="Ranuras" type="VBoxContainer" parent="." unique_id=955643035]
+visible = false
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -20.0
+offset_top = -20.0
+offset_right = 20.0
+offset_bottom = 20.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Lista" type="VBoxContainer" parent="Ranuras" unique_id=470391861]
+layout_mode = 2
+
+[node name="BtnVolver" type="Button" parent="Ranuras" unique_id=1199902432]
+layout_mode = 2
+text = "Back"
+
+[node name="Aviso" type="Label" parent="." unique_id=970841075]
+offset_left = 556.0
+offset_top = 644.0
+offset_right = 596.0
+offset_bottom = 667.0
