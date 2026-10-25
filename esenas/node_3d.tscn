@@ -2,18 +2,27 @@
 
 [ext_resource type="Script" uid="uid://coaa0ann4irkp" path="res://scripts/node_3d.gd" id="1_a0tk4"]
 [ext_resource type="PackedScene" uid="uid://p8hvn2epsd7t" path="res://mario_run.scn" id="3_kae8f"]
+[ext_resource type="PackedScene" uid="uid://do87ifj5dsqnv" path="res://mario_golpe.scn" id="4_5g8wv"]
+[ext_resource type="PackedScene" uid="uid://dvntsti2jixyh" path="res://mario_resiviendoGolpe.scn" id="5_6h1vx"]
 [ext_resource type="PackedScene" uid="uid://dheefbljtarsb" path="res://modelos/TABLERO_PINTADO2.glb" id="6_2a3mv"]
 [ext_resource type="PackedScene" uid="uid://8bxcn1btnldn" path="res://modelos/goomba.glb" id="6_n71fy"]
-[ext_resource type="PackedScene" uid="uid://ctdtabn77x55q" path="res://MODELOS_PIEZAS/MARIO(REY)/Mario quieto.glb" id="7_2a3mv"]
-[ext_resource type="PackedScene" uid="uid://bs3dkljlioi2d" path="res://MODELOS_PIEZAS/BROWSER(REY)_IA/Browser_quieto.glb" id="7_ilgee"]
+[ext_resource type="PackedScene" uid="uid://ctdtabn77x55q" path="res://MODELO_PIEZAS/MARIO(REY)/Mario quieto.glb" id="7_2a3mv"]
+[ext_resource type="PackedScene" uid="uid://bs3dkljlioi2d" path="res://MODELO_PIEZAS/BROWSER(REY)_IA/Browser_quieto.glb" id="7_ilgee"]
 [ext_resource type="PackedScene" uid="uid://d0pbavs8ph3gp" path="res://bowser_run.scn" id="7_kae8f"]
-[ext_resource type="PackedScene" uid="uid://2nyg00t1pca" path="res://MODELOS_PIEZAS/LUIGI(ALFIL)/luigi _quieto.glb" id="8_kjrww"]
-[ext_resource type="PackedScene" uid="uid://b1ixs0l7kxkm3" path="res://MODELOS_PIEZAS/PEACH(Reina)/peach_quieta.glb" id="9_kae8f"]
+[ext_resource type="PackedScene" uid="uid://2nyg00t1pca" path="res://MODELO_PIEZAS/LUIGI(ALFIL)/luigi _quieto.glb" id="8_kjrww"]
+[ext_resource type="PackedScene" uid="uid://b1ixs0l7kxkm3" path="res://MODELO_PIEZAS/PEACH(Reina)/peach_quieta.glb" id="9_kae8f"]
 [ext_resource type="PackedScene" uid="uid://cfq4bdehaaos5" path="res://luigi_run.scn" id="9_yxtym"]
-[ext_resource type="PackedScene" uid="uid://clcyimq67bjso" path="res://MODELOS_PIEZAS/YOSHI(CABALLO)/yoshi _quieto.glb" id="10_yxtym"]
+[ext_resource type="PackedScene" uid="uid://dbhj220osbclk" path="res://browser_resiviendoGolpe.scn" id="10_6h1vx"]
+[ext_resource type="PackedScene" uid="uid://clcyimq67bjso" path="res://MODELO_PIEZAS/YOSHI(CABALLO)/yoshi _quieto.glb" id="10_yxtym"]
+[ext_resource type="PackedScene" uid="uid://cjbhefin48nke" path="res://browser_golpe.scn" id="11_82x64"]
+[ext_resource type="PackedScene" uid="uid://04tkiurpjyqh" path="res://luigi_golpe.scn" id="12_57ap0"]
 [ext_resource type="PackedScene" uid="uid://rapbq0cuw4hv" path="res://yoshi_run_20.scn" id="12_kae8f"]
+[ext_resource type="PackedScene" uid="uid://u1vf25yjvgra" path="res://luigi_resiviendoGolpe.scn" id="13_6h1vx"]
 [ext_resource type="PackedScene" uid="uid://cx4le2pws7w5p" path="res://esenas/fondo_3d.tscn" id="13_yxtym"]
+[ext_resource type="PackedScene" uid="uid://dsr755xiwtldc" path="res://yoshi_bailando.scn" id="14_qmdpr"]
 [ext_resource type="PackedScene" uid="uid://cii4ht88mr7l3" path="res://island.glb" id="14_vtcr5"]
+[ext_resource type="PackedScene" uid="uid://cl1kn0wxvjwd2" path="res://yoshi_golpe.scn" id="15_wmd6l"]
+[ext_resource type="PackedScene" uid="uid://c6v5rw8uam82i" path="res://yoshi_resiviendoGolpe.scn" id="21_82x64"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_a0tk4"]
 transparency = 1
@@ -37,6 +46,12 @@ transform = Transform3D(0.006, 0, 0, 0, 0.006, 0, 0, 0, 0.006, 0, 0, 0)
 
 [node name="Mario_run" parent="piezaMario(rey)" unique_id=629585144 instance=ExtResource("3_kae8f")]
 transform = Transform3D(0.006, 0, 0, 0, 0.006, 0, 0, 0, 0.006, 0, 0, 0)
+
+[node name="Mario_golpe" parent="piezaMario(rey)" unique_id=1462368212 instance=ExtResource("4_5g8wv")]
+transform = Transform3D(0.6, 0, 0, 0, 0.6, 0, 0, 0, 0.6, 0, 0, 0)
+
+[node name="Mario_resiviendoGolpe" parent="piezaMario(rey)" unique_id=1136576641 instance=ExtResource("5_6h1vx")]
+transform = Transform3D(0.65, 0, 0, 0, 0.65, 0, 0, 0, 0.65, 0, 0, 0)
 
 [node name="Resaltador" type="MeshInstance3D" parent="." unique_id=1838477143]
 transform = Transform3D(0.88, 0, 0, 0, 0.2, 0, 0, 0, 0.88, 0, 4.7683716e-06, 0)
@@ -74,6 +89,12 @@ transform = Transform3D(0.38, 0, 0, 0, 0.38, 0, 0, 0, 0.38, 0, 0, 0)
 [node name="Bowser_run" parent="piezaBowser(rey)" unique_id=1752693962 instance=ExtResource("7_kae8f")]
 transform = Transform3D(36, 0, 0, 0, 36, 0, 0, 0, 36, 0, 0, 0)
 
+[node name="browser_resiviendoGolpe" parent="piezaBowser(rey)" unique_id=1517875499 instance=ExtResource("10_6h1vx")]
+transform = Transform3D(0.8, 0, 0, 0, 0.8, 0, 0, 0, 0.8, 0, 0, 0)
+
+[node name="browser_golpe" parent="piezaBowser(rey)" unique_id=2073039586 instance=ExtResource("11_82x64")]
+transform = Transform3D(0.8, 0, 0, 0, 0.8, 0, 0, 0, 0.8, 0, 0, 0)
+
 [node name="piezaLuigi(alfil)" type="Node3D" parent="." unique_id=1937363173]
 
 [node name="luigi_quieto" parent="piezaLuigi(alfil)" unique_id=621952084 instance=ExtResource("8_kjrww")]
@@ -81,6 +102,12 @@ transform = Transform3D(0.04, 0, 0, 0, 0.04, 0, 0, 0, 0.04, 0, 0, 0)
 
 [node name="luigi_run" parent="piezaLuigi(alfil)" unique_id=1136146047 instance=ExtResource("9_yxtym")]
 transform = Transform3D(3.7, 0, 0, 0, 3.7, 0, 0, 0, 3.7, 0, 0, 0)
+
+[node name="luigi_golpe" parent="piezaLuigi(alfil)" unique_id=1077138337 instance=ExtResource("12_57ap0")]
+transform = Transform3D(1.5, 0, 0, 0, 1.5, 0, 0, 0, 1.5, 0, 0, 0)
+
+[node name="luigi_resiviendoGolpe" parent="piezaLuigi(alfil)" unique_id=1717082246 instance=ExtResource("13_6h1vx")]
+transform = Transform3D(1.5, 0, 0, 0, 1.5, 0, 0, 0, 1.5, 0, 0, 0)
 
 [node name="piezaPeach(reina)" type="Node3D" parent="." unique_id=1065124850]
 
@@ -94,6 +121,15 @@ transform = Transform3D(0.025, 0, 0, 0, 0.025, 0, 0, 0, 0.025, 0, 0, 0)
 
 [node name="yoshi_run" parent="piezaYoshi(caballo)" unique_id=1749328208 instance=ExtResource("12_kae8f")]
 transform = Transform3D(0.005, 0, 0, 0, 0.005, 0, 0, 0, 0.005, 0, 0, 0)
+
+[node name="yoshi_bailando" parent="piezaYoshi(caballo)" unique_id=260078277 instance=ExtResource("14_qmdpr")]
+transform = Transform3D(0.6, 0, 0, 0, 0.6, 0, 0, 0, 0.6, 0, 0, 0)
+
+[node name="yoshi_golpe" parent="piezaYoshi(caballo)" unique_id=857487777 instance=ExtResource("15_wmd6l")]
+transform = Transform3D(0.6, 0, 0, 0, 0.6, 0, 0, 0, 0.6, 0, 0, 0)
+
+[node name="yoshi_resiviendoGolpe" parent="piezaYoshi(caballo)" unique_id=70684689 instance=ExtResource("21_82x64")]
+transform = Transform3D(0.6, 0, 0, 0, 0.6, 0, 0, 0, 0.6, 0, 0, 0)
 
 [node name="piedra" type="Node3D" parent="." unique_id=1743518209]
 

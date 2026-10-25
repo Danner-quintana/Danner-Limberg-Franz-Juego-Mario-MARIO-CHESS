@@ -1,0 +1,44 @@
+[remap]
+
+importer="texture"
+type="CompressedTexture2D"
+uid="uid://ddwf4kro0fdko"
+path.s3tc="res://.godot/imported/luigi_resiviendoGolpe_LuigiCap_nrm.png-f0bf4579e59b6f9f87f8624f83036cb0.s3tc.ctex"
+metadata={
+"imported_formats": ["s3tc_bptc"],
+"vram_texture": true
+}
+generator_parameters={
+"md5": "ffae7639ec001fb18a109ef0c5723aa0"
+}
+
+[deps]
+
+source_file="res://ANIMACIONES DE PIEZAS 2DA PARTE/luigi_resiviendoGolpe/luigi_resiviendoGolpe_LuigiCap_nrm.png"
+dest_files=["res://.godot/imported/luigi_resiviendoGolpe_LuigiCap_nrm.png-f0bf4579e59b6f9f87f8624f83036cb0.s3tc.ctex"]
+
+[params]
+
+compress/mode=2
+compress/high_quality=false
+compress/lossy_quality=0.7
+compress/uastc_level=0
+compress/rdo_quality_loss=0.0
+compress/hdr_compression=1
+compress/normal_map=1
+compress/channel_pack=0
+mipmaps/generate=true
+mipmaps/limit=-1
+roughness/mode=1
+roughness/src_normal="res://ANIMACIONES DE PIEZAS 2DA PARTE/luigi_resiviendoGolpe/luigi_resiviendoGolpe_LuigiCap_nrm.png"
+process/channel_remap/red=0
+process/channel_remap/green=1
+process/channel_remap/blue=2
+process/channel_remap/alpha=3
+process/fix_alpha_border=true
+process/premult_alpha=false
+process/normal_map_invert_y=false
+process/hdr_as_srgb=false
+process/hdr_clamp_exposure=false
+process/size_limit=0
+detect_3d/compress_to=0

@@ -36,6 +36,22 @@ const TEXTO_CONTROLES := {
 	2: "Arrows  move   ·   Enter  attack",
 }
 
+# ---------- AJEDREZ COMPLETO (32 piezas) ----------
+const AJEDREZ_COMPLETO := true     # false = vuelve a las 9 piezas de prueba
+# Nodos que ya existen en la escena y se copian para armar todas las piezas
+const PLANTILLAS := {
+	"rey": "piezaMario(rey)",
+	"reina": "piezaPeach(reina)",
+	"alfil": "piezaLuigi(alfil)",
+	"caballo": "piezaYoshi(caballo)",
+	"torre": "piezaBowser(rey)",   # Bowser hace de torre (el nombre del nodo da igual)
+	"peon": "piezaGomba(peon)",
+}
+const ORDEN_FONDO := ["torre", "caballo", "alfil", "reina", "rey", "alfil", "caballo", "torre"]
+# Tinte rojo suave para distinguir al equipo 2 (mientras usan los mismos modelos)
+const TINTAR_EQUIPO2 := true
+const TINTE_EQUIPO2 := Color(1.0, 0.25, 0.25, 0.3)
+
 # Duelo: vida y daño por tipo de pieza (ajústalos a tu gusto)
 const DATOS := {
 	"peon": {"vida": 30, "dano": 5},
@@ -97,7 +113,7 @@ func _ready() -> void:
 	etiqueta.add_theme_constant_override("outline_size", 8)
 	hud = HudDuelo.new()
 	add_child(hud)
-	
+
 	menu_pausa = MenuPausa.instantiate()
 	add_child(menu_pausa)
 	menu_pausa.configurar(self)
@@ -107,24 +123,14 @@ func _ready() -> void:
 	end_screen.play_again.connect(_on_play_again)
 	end_screen.main_menu.connect(_on_end_main_menu)
 
-	# Aquí se registran las piezas. Para agregar otra, copia una línea.
-		# Equipo 1 (tú)
-	piezas.append({"nodo": $"piezaMario(rey)", "tipo": "rey", "casilla": Vector2i(4, 7), "equipo": 1})
-	piezas.append({"nodo": $"piezaPeach(reina)", "tipo": "reina", "casilla": Vector2i(3, 7), "equipo": 1})
-	piezas.append({"nodo": $"piezaGomba(peon)", "tipo": "peon", "casilla": Vector2i(3, 6), "equipo": 1})
-	piezas.append({"nodo": $"piezaGomba2(peon)", "tipo": "peon", "casilla": Vector2i(4, 6), "equipo": 1})
-	# Equipo 2 (IA)
-	piezas.append({"nodo": $"piezaBowser(rey)", "tipo": "rey", "casilla": Vector2i(4, 0), "equipo": 2})
-	piezas.append({"nodo": $"piezaYoshi(caballo)", "tipo": "caballo", "casilla": Vector2i(6, 0), "equipo": 2})
-	piezas.append({"nodo": $"piezaLuigi(alfil)", "tipo": "alfil", "casilla": Vector2i(2, 0), "equipo": 2})
-	piezas.append({"nodo": $"piezaGombaRival(peon)", "tipo": "peon", "casilla": Vector2i(3, 1), "equipo": 2})
-	piezas.append({"nodo": $"piezaGombaRival2(peon)", "tipo": "peon", "casilla": Vector2i(4, 1), "equipo": 2})
-	
+	# Aquí se arman las piezas (ajedrez completo o las 9 de prueba)
+	registrar_piezas()
+
 	var ranura: int = GestorPartidas.ranura_a_cargar
 	if ranura > 0:
 		restaurar_partida(GestorPartidas.cargar(ranura))
 		GestorPartidas.ranura_a_cargar = -1
-	
+
 	for p in piezas:
 		p["nodo"].position = calcular_pos(p["casilla"])
 		p["nodo"].rotation_degrees.y = giro_inicial(p["equipo"])
@@ -143,6 +149,74 @@ func crear_material(color: Color) -> StandardMaterial3D:
 	m.albedo_color = color
 	m.transparency = BaseMaterial3D.TRANSPARENCY_ALPHA
 	return m
+
+# ---------------- ARMADO DE PIEZAS ----------------
+func registrar_piezas() -> void:
+	if not AJEDREZ_COMPLETO:
+		registrar_piezas_prueba()
+		return
+
+	var plantillas: Dictionary = {}
+	for tipo in PLANTILLAS:
+		var nodo = get_node_or_null(PLANTILLAS[tipo])
+		if nodo == null:
+			push_warning("FALTA LA PLANTILLA: " + PLANTILLAS[tipo])
+			continue
+		plantillas[tipo] = nodo
+
+	for equipo in [1, 2]:
+		var fila_fondo: int = 7 if equipo == 1 else 0
+		var fila_peones: int = 6 if equipo == 1 else 1
+		for col in 8:
+			crear_pieza(plantillas, ORDEN_FONDO[col], Vector2i(col, fila_fondo), equipo)
+			crear_pieza(plantillas, "peon", Vector2i(col, fila_peones), equipo)
+
+	# Esconder las piezas originales de la escena (ya fueron copiadas)
+	for hijo in get_children():
+		if String(hijo.name).begins_with("pieza"):
+			hijo.visible = false
+
+# Copia una plantilla, la coloca en el tablero y la registra
+func crear_pieza(plantillas: Dictionary, tipo: String, casilla: Vector2i, equipo: int) -> void:
+	if not plantillas.has(tipo):
+		return
+	var original: Node3D = plantillas[tipo]
+	var copia: Node3D = original.duplicate() as Node3D
+	copia.name = "E%d_%s_%d" % [equipo, tipo, casilla.x]    # nombre único (lo usa el guardado)
+	add_child(copia)
+	copia.visible = true
+	if TINTAR_EQUIPO2 and equipo == 2:
+		tenir(copia)
+	piezas.append({
+		"nodo": copia, "tipo": tipo, "casilla": casilla, "equipo": equipo,
+		"plantilla": PLANTILLAS[tipo],
+	})
+
+# Tinte suave sobre todos los modelos de una pieza
+func tenir(nodo: Node3D) -> void:
+	var m := StandardMaterial3D.new()
+	m.albedo_color = TINTE_EQUIPO2
+	m.transparency = BaseMaterial3D.TRANSPARENCY_ALPHA
+	for malla in nodo.find_children("*", "MeshInstance3D", true, false):
+		malla.material_overlay = m
+
+# Las 9 piezas de prueba de antes
+func registrar_piezas_prueba() -> void:
+	# Equipo 1 (tú)
+	piezas.append({"nodo": $"piezaMario(rey)", "tipo": "rey", "casilla": Vector2i(4, 7), "equipo": 1})
+	piezas.append({"nodo": $"piezaPeach(reina)", "tipo": "reina", "casilla": Vector2i(3, 7), "equipo": 1})
+	piezas.append({"nodo": $"piezaGomba(peon)", "tipo": "peon", "casilla": Vector2i(3, 6), "equipo": 1})
+	piezas.append({"nodo": $"piezaGomba2(peon)", "tipo": "peon", "casilla": Vector2i(4, 6), "equipo": 1})
+	# Equipo 2 (IA)
+	piezas.append({"nodo": $"piezaBowser(rey)", "tipo": "rey", "casilla": Vector2i(4, 0), "equipo": 2})
+	piezas.append({"nodo": $"piezaYoshi(caballo)", "tipo": "caballo", "casilla": Vector2i(6, 0), "equipo": 2})
+	piezas.append({"nodo": $"piezaLuigi(alfil)", "tipo": "alfil", "casilla": Vector2i(2, 0), "equipo": 2})
+	piezas.append({"nodo": $"piezaGombaRival(peon)", "tipo": "peon", "casilla": Vector2i(3, 1), "equipo": 2})
+	piezas.append({"nodo": $"piezaGombaRival2(peon)", "tipo": "peon", "casilla": Vector2i(4, 1), "equipo": 2})
+
+# Nombre que se le pasa al HUD (el de la plantilla, como antes)
+func nombre_hud(p: Dictionary) -> String:
+	return String(p.get("plantilla", p["nodo"].name))
 
 func actualizar_etiqueta() -> void:
 	texto_turno("Turn: Player " + str(turno), turno)
@@ -215,6 +289,7 @@ func _unhandled_input(event: InputEvent) -> void:
 					atacante["nodo"].position.y = ALTURA_TABLERO
 					iniciar_duelo(atacante, defensor)
 				# Si no es válido, no pasa nada y sigue seleccionada
+
 func abrir_pausa() -> void:
 	if duelo_en_curso or en_movimiento:
 		return
@@ -236,6 +311,7 @@ func datos_de_partida() -> Dictionary:
 			"equipo": p["equipo"],
 		})
 	return {"turno": turno, "piezas": lista, "terminado": juego_terminado, "ganador": ganador}
+
 # Coloca cada pieza donde estaba y elimina las que ya habían sido capturadas
 func restaurar_partida(datos: Dictionary) -> void:
 	var guardadas: Dictionary = {}
@@ -313,21 +389,43 @@ func iniciar_duelo(atacante: Dictionary, defensor: Dictionary) -> void:
 	var pieza1: Dictionary = atacante if atacante["equipo"] == 1 else defensor
 	var pieza2: Dictionary = defensor if atacante["equipo"] == 1 else atacante
 	luchadores = [crear_luchador(pieza1, Vector2i(4, 7), 0), crear_luchador(pieza2, Vector2i(4, 0), 1)]
+	orientar_luchadores()
 
 	for f in luchadores:
 		var eq: int = f["pieza"]["equipo"]
 		var nombre: String = NOMBRE_TIPO.get(f["pieza"]["tipo"], "Piece")
-		hud.configurar(f["indice"], "Player " + str(eq) + "  -  " + nombre, f["vida_max"], TEXTO_CONTROLES[eq], String(f["pieza"]["nodo"].name))
+		hud.configurar(f["indice"], "Player " + str(eq) + "  -  " + nombre, f["vida_max"], TEXTO_CONTROLES[eq], nombre_hud(f["pieza"]))
 	hud.mostrar()
 
 func crear_luchador(p: Dictionary, casilla: Vector2i, indice: int) -> Dictionary:
 	var datos: Dictionary = DATOS[p["tipo"]]
 	p["nodo"].position = calcular_pos(casilla)
+	animador.quieto(p)
 	return {
 		"pieza": p, "casilla": casilla, "indice": indice,
 		"vida": datos["vida"], "vida_max": datos["vida"], "dano": datos["dano"],
-		"listo_atacar": 0.0, "tween": null,
+		"listo_atacar": 0.0, "tween": null, "anim_id": 0,
 	}
+
+# Cada luchador mira hacia su rival
+func orientar_luchadores() -> void:
+	if luchadores.size() < 2:
+		return
+	for i in 2:
+		var f: Dictionary = luchadores[i]
+		var otro: Dictionary = luchadores[1 - i]
+		var dx: float = float(otro["casilla"].x - f["casilla"].x)
+		var dz: float = float(otro["casilla"].y - f["casilla"].y)
+		f["pieza"]["nodo"].rotation.y = atan2(dx, dz)
+
+# Después de una animación (golpe, recibir, correr) vuelve a la pose quieta
+func animar_y_volver(f: Dictionary, espera: float) -> void:
+	f["anim_id"] += 1
+	var id: int = f["anim_id"]
+	await get_tree().create_timer(espera).timeout
+	var nodo = f["pieza"]["nodo"]
+	if f["anim_id"] == id and is_instance_valid(nodo) and f["vida"] > 0:
+		animador.quieto(f["pieza"])
 
 func actualizar_vida(f: Dictionary) -> void:
 	hud.actualizar(f["indice"], f["vida"], f["vida_max"])
@@ -361,22 +459,30 @@ func mover_luchador(f: Dictionary, otro: Dictionary, paso: Vector2i) -> void:
 	if destino == otro["casilla"]:
 		return   # no se puede entrar en la casilla del rival
 	f["casilla"] = destino
+	orientar_luchadores()
+	f["anim_id"] += 1
+	animador.moviendo(f["pieza"])
 	if f["tween"] != null:
 		f["tween"].kill()
 	f["tween"] = create_tween()
 	f["tween"].tween_property(f["pieza"]["nodo"], "position", calcular_pos(destino), 0.12)
+	f["tween"].finished.connect(func(): animar_y_volver(f, 0.15))
 
 func atacar(f: Dictionary, otro: Dictionary) -> void:
 	var ahora: float = Time.get_ticks_msec() / 1000.0
 	if ahora < f["listo_atacar"]:
 		return
 	f["listo_atacar"] = ahora + ESPERA_ATAQUE
-	# Animación del golpe
-	var nodo: Node3D = f["pieza"]["nodo"]
-	var s: Vector3 = nodo.scale
-	var t = create_tween()
-	t.tween_property(nodo, "scale", s * 1.25, 0.08)
-	t.tween_property(nodo, "scale", s, 0.08)
+	# Animación del golpe (si la pieza no tiene, se agranda un momento)
+	var dur: float = animador.golpe(f["pieza"])
+	if dur > 0.0:
+		animar_y_volver(f, minf(dur, 0.8))
+	else:
+		var nodo: Node3D = f["pieza"]["nodo"]
+		var s: Vector3 = nodo.scale
+		var t = create_tween()
+		t.tween_property(nodo, "scale", s * 1.25, 0.08)
+		t.tween_property(nodo, "scale", s, 0.08)
 	# Solo golpea si el rival está en una casilla pegada a la tuya
 	var d: Vector2i = f["casilla"] - otro["casilla"]
 	if maxi(absi(d.x), absi(d.y)) == 1:
@@ -385,10 +491,19 @@ func atacar(f: Dictionary, otro: Dictionary) -> void:
 func recibir_dano(f: Dictionary, cantidad: int) -> void:
 	f["vida"] = maxi(f["vida"] - cantidad, 0)
 	actualizar_vida(f)
-	if f["vida"] <= 0 and not duelo_terminando:
+	var dur: float = animador.recibir(f["pieza"])
+	if f["vida"] > 0:
+		if dur > 0.0:
+			animar_y_volver(f, minf(dur, 0.7))
+	elif not duelo_terminando:
 		duelo_terminando = true
+		f["anim_id"] += 1   # el derrotado se queda en su pose de golpe
+		for g in luchadores:
+			if g["indice"] != f["indice"]:
+				g["anim_id"] += 1
+				animador.festejar(g["pieza"])   # solo Yoshi tiene baile
 		var gana_equipo: int = 3 - f["pieza"]["equipo"]
-		await get_tree().create_timer(1.0).timeout
+		await get_tree().create_timer(1.6).timeout
 		terminar_duelo(gana_equipo)
 
 func terminar_duelo(gana_equipo: int) -> void:
@@ -398,6 +513,8 @@ func terminar_duelo(gana_equipo: int) -> void:
 	for p in piezas:
 		p["nodo"].visible = true
 		p["nodo"].position = calcular_pos(p["casilla"])
+		p["nodo"].rotation_degrees.y = giro_inicial(p["equipo"])
+		animador.quieto(p)
 	duelo_en_curso = false
 	actualizar_etiqueta()
 	resolver_duelo(duelo_atacante, duelo_defensor, duelo_atacante["equipo"] == gana_equipo)
@@ -439,7 +556,6 @@ func fila_inicial_peon(equipo: int) -> int:
 func giro_inicial(equipo: int) -> float:
 	return 180.0 if equipo == 1 else 0.0
 
-# Devuelve "mover", "capturar" o "" (jugada no permitida)
 # Devuelve "mover", "capturar" o "" (jugada no permitida)
 func tipo_de_jugada(p: Dictionary, hasta: Vector2i) -> String:
 	var otra: Variant = pieza_en(hasta)
