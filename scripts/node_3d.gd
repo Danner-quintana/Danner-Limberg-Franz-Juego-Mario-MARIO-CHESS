@@ -2,11 +2,17 @@ extends Node3D
 
 const TAM_CASILLA := 0.885
 const CENTRO := Vector2(0.044, 0.163)
-const ELEVACION_SELECCION := 0.25 # 0.0 = no se eleva; 0.3 era lo que teníamos antes
+const ELEVACION_SELECCION := 0.08   # 0.0 = no se eleva; 0.3 era lo que teníamos antes
 const ALTURA_TABLERO := 0.05
 
 const MenuPausa = preload("res://menu_pausa.tscn")
 var menu_pausa
+
+# Victory / defeat screen
+const EndScreen = preload("res://scripts/end_screen.gd")
+const MAIN_MENU_SCENE := "res://menu_principal.tscn"
+var end_screen
+
 
 const CerebroIA = preload("res://scripts/cerebro_ia.gd")
 const Animador = preload("res://scripts/animador.gd")
@@ -96,8 +102,13 @@ func _ready() -> void:
 	add_child(menu_pausa)
 	menu_pausa.configurar(self)
 
+	end_screen = EndScreen.new()
+	add_child(end_screen)
+	end_screen.play_again.connect(_on_play_again)
+	end_screen.main_menu.connect(_on_end_main_menu)
+
 	# Aquí se registran las piezas. Para agregar otra, copia una línea.
-	# Equipo 1 (tú)
+		# Equipo 1 (tú)
 	piezas.append({"nodo": $"piezaMario(rey)", "tipo": "rey", "casilla": Vector2i(4, 7), "equipo": 1})
 	piezas.append({"nodo": $"piezaPeach(reina)", "tipo": "reina", "casilla": Vector2i(3, 7), "equipo": 1})
 	piezas.append({"nodo": $"piezaGomba(peon)", "tipo": "peon", "casilla": Vector2i(3, 6), "equipo": 1})
@@ -120,8 +131,10 @@ func _ready() -> void:
 		animador.preparar(p)
 
 	actualizar_etiqueta()
+	if not juego_terminado:
+		Music.play("board")
 	if juego_terminado:
-		texto_turno("Player " + str(ganador) + " Wins!   (Esc to exit)", ganador)
+		announce_result(0.4)
 	elif turno == ia_equipo:
 		jugar_ia()
 
@@ -202,12 +215,10 @@ func _unhandled_input(event: InputEvent) -> void:
 					atacante["nodo"].position.y = ALTURA_TABLERO
 					iniciar_duelo(atacante, defensor)
 				# Si no es válido, no pasa nada y sigue seleccionada
-
-# ARREGLO 2: Permite abrir pausa con Esc incluso durante el duelo
 func abrir_pausa() -> void:
-	if en_movimiento:
+	if duelo_en_curso or en_movimiento:
 		return
-	if not juego_terminado and turno == ia_equipo and not duelo_en_curso:
+	if not juego_terminado and turno == ia_equipo:
 		return
 	if seleccionada != null:
 		seleccionada["nodo"].position.y = ALTURA_TABLERO
@@ -225,7 +236,6 @@ func datos_de_partida() -> Dictionary:
 			"equipo": p["equipo"],
 		})
 	return {"turno": turno, "piezas": lista, "terminado": juego_terminado, "ganador": ganador}
-
 # Coloca cada pieza donde estaba y elimina las que ya habían sido capturadas
 func restaurar_partida(datos: Dictionary) -> void:
 	var guardadas: Dictionary = {}
@@ -276,8 +286,7 @@ func jugar_ia() -> void:
 	if jugada.is_empty():
 		cambiar_turno()    # no tiene jugadas posibles: pasa el turno
 		return
-	var motivo_en: String = "capture" if jugada["jugada"] == "capturar" else "move"
-	texto_turno("AI decided to: " + motivo_en, ia_equipo)
+	texto_turno("AI decided: " + jugada["motivo"], ia_equipo)
 	await get_tree().create_timer(0.8).timeout
 	var p: Dictionary = jugada["pieza"]
 	if jugada["jugada"] == "mover":
@@ -293,6 +302,7 @@ func iniciar_duelo(atacante: Dictionary, defensor: Dictionary) -> void:
 	duelo_defensor = defensor
 	resaltador.visible = false
 	etiqueta.text = ""   # el HUD del duelo muestra la información
+	Music.play("duel")
 
 	# Esconder las demás piezas
 	for p in piezas:
@@ -356,19 +366,20 @@ func mover_luchador(f: Dictionary, otro: Dictionary, paso: Vector2i) -> void:
 	f["tween"] = create_tween()
 	f["tween"].tween_property(f["pieza"]["nodo"], "position", calcular_pos(destino), 0.12)
 
-# ARREGLO 1: Al atacar, el que se levanta es el otro jugador (el enemigo), no el que ataca
 func atacar(f: Dictionary, otro: Dictionary) -> void:
 	var ahora: float = Time.get_ticks_msec() / 1000.0
 	if ahora < f["listo_atacar"]:
 		return
 	f["listo_atacar"] = ahora + ESPERA_ATAQUE
-	# Solo golpea y levanta al enemigo si el rival está en una casilla pegada a la tuya
+	# Animación del golpe
+	var nodo: Node3D = f["pieza"]["nodo"]
+	var s: Vector3 = nodo.scale
+	var t = create_tween()
+	t.tween_property(nodo, "scale", s * 1.25, 0.08)
+	t.tween_property(nodo, "scale", s, 0.08)
+	# Solo golpea si el rival está en una casilla pegada a la tuya
 	var d: Vector2i = f["casilla"] - otro["casilla"]
 	if maxi(absi(d.x), absi(d.y)) == 1:
-		var nodo_enemigo: Node3D = otro["pieza"]["nodo"]
-		var t = create_tween()
-		t.tween_property(nodo_enemigo, "position:y", ALTURA_TABLERO + 0.35, 0.08)
-		t.tween_property(nodo_enemigo, "position:y", ALTURA_TABLERO, 0.08)
 		recibir_dano(otro, f["dano"])
 
 func recibir_dano(f: Dictionary, cantidad: int) -> void:
@@ -390,6 +401,8 @@ func terminar_duelo(gana_equipo: int) -> void:
 	duelo_en_curso = false
 	actualizar_etiqueta()
 	resolver_duelo(duelo_atacante, duelo_defensor, duelo_atacante["equipo"] == gana_equipo)
+	if not juego_terminado:
+		Music.play("board")   # back to the board music (if the game ended, the result music plays instead)
 
 func resolver_duelo(atacante: Dictionary, defensor: Dictionary, gana_atacante: bool) -> void:
 	if gana_atacante:
@@ -406,7 +419,7 @@ func eliminar_pieza(p: Dictionary) -> void:
 	if p["tipo"] == "rey":
 		juego_terminado = true
 		ganador = 3 - p["equipo"]
-		texto_turno("Player " + str(ganador) + " Wins!   (Esc to exit)", ganador)
+		announce_result()
 
 # Devuelve la pieza que está en una casilla (o null si está vacía)
 func pieza_en(casilla: Vector2i) -> Variant:
@@ -426,6 +439,7 @@ func fila_inicial_peon(equipo: int) -> int:
 func giro_inicial(equipo: int) -> float:
 	return 180.0 if equipo == 1 else 0.0
 
+# Devuelve "mover", "capturar" o "" (jugada no permitida)
 # Devuelve "mover", "capturar" o "" (jugada no permitida)
 func tipo_de_jugada(p: Dictionary, hasta: Vector2i) -> String:
 	var otra: Variant = pieza_en(hasta)
@@ -508,3 +522,21 @@ func casilla_bajo_cursor(pos_mouse: Vector2) -> Vector2i:
 
 func calcular_pos(c: Vector2i) -> Vector3:
 	return Vector3(CENTRO.x + (c.x - 3.5) * TAM_CASILLA, ALTURA_TABLERO, CENTRO.y + (c.y - 3.5) * TAM_CASILLA)
+
+# ---------------- VICTORY / DEFEAT ----------------
+# Waits a moment (so you can see the final capture) and then shows VICTORY or DEFEAT
+func announce_result(delay: float = 1.6) -> void:
+	etiqueta.text = ""
+	await get_tree().create_timer(delay).timeout
+	var player_won: bool = ia_equipo == 0 or ganador != ia_equipo
+	Music.play("victory" if player_won else "defeat", 0.3)
+	end_screen.show_result(ganador, ia_equipo)
+
+func _on_play_again() -> void:
+	GestorPartidas.ranura_a_cargar = -1
+	get_tree().paused = false
+	get_tree().reload_current_scene()
+
+func _on_end_main_menu() -> void:
+	get_tree().paused = false
+	get_tree().change_scene_to_file(MAIN_MENU_SCENE)

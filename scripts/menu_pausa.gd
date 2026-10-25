@@ -89,10 +89,12 @@ func abrir(puede_guardar: bool = true) -> void:
 	btn_cargar.disabled = not GestorPartidas.hay_partidas()
 	mostrar_aviso("" if puede_guardar else "Game over: saving is disabled")
 	show()
+	Music.duck(true)   # quieter music while paused
 	panel.modulate.a = 0.0
 	create_tween().tween_property(panel, "modulate:a", 1.0, 0.2)
 
 func cerrar() -> void:
+	Music.duck(false)
 	hide()
 	get_tree().paused = false
 
@@ -122,7 +124,7 @@ func refrescar_ranuras() -> void:
 		var b := Button.new()
 		var hay: bool = GestorPartidas.existe(i)
 		if hay:
-			var d: Dictionary = GestorPartidas.cargar(i)
+			var d := GestorPartidas.cargar(i)
 			b.text = "Slot %d  -  %s" % [i, d.get("fecha", "")]
 		else:
 			b.text = "Slot %d  -  Empty" % i

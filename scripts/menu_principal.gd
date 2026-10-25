@@ -10,6 +10,7 @@ const SUBTITULO := "Chess Duel Adventure"
 var titulo_ranuras: Label
 
 func _ready() -> void:
+	Music.play("menu")
 	# Fondo animado (el nodo VideoStreamPlayer "Fondo" ya no se usa)
 	$Fondo.hide()
 	var fondo := FondoMenu.new()
@@ -85,7 +86,7 @@ func refrescar_ranuras() -> void:
 	for i in range(1, GestorPartidas.MAX_RANURAS + 1):
 		var b := Button.new()
 		if GestorPartidas.existe(i):
-			var d: Dictionary = GestorPartidas.cargar(i)
+			var d := GestorPartidas.cargar(i)
 			b.text = "Slot %d  -  %s" % [i, d.get("fecha", "")]
 			b.pressed.connect(_cargar_ranura.bind(i))
 		else:
