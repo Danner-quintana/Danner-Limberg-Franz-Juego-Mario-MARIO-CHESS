@@ -1,0 +1,72 @@
+[gd_scene format=3 uid="uid://ctslgwtjs6rt1"]
+
+[ext_resource type="Script" uid="uid://cjs8hqrw4vl28" path="res://scripts/menu_principal.gd" id="1_bj1uy"]
+
+[node name="MenuPrincipal" type="Control" unique_id=574547073]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_bj1uy")
+
+[node name="Fondo" type="VideoStreamPlayer" parent="." unique_id=862776128]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Botones" type="VBoxContainer" parent="." unique_id=1874145829]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -20.0
+offset_top = -29.5
+offset_right = 20.0
+offset_bottom = 29.5
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Titulo" type="Label" parent="Botones" unique_id=673959909]
+layout_mode = 2
+text = "MARIOPIZ"
+
+[node name="BtnNueva" type="Button" parent="Botones" unique_id=1608437894]
+layout_mode = 2
+text = "New Game"
+
+[node name="BtnContinuar" type="Button" parent="Botones" unique_id=117849535]
+layout_mode = 2
+text = "Load Game"
+
+[node name="BtnSalir" type="Button" parent="Botones" unique_id=593977719]
+layout_mode = 2
+text = "Quit"
+
+[node name="Ranuras" type="VBoxContainer" parent="." unique_id=923947644]
+visible = false
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -20.0
+offset_top = -20.0
+offset_right = 20.0
+offset_bottom = 20.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Lista" type="VBoxContainer" parent="Ranuras" unique_id=1068553023]
+layout_mode = 2
+
+[node name="BtnVolver" type="Button" parent="Ranuras" unique_id=1375587986]
+layout_mode = 2
+text = "Back"
