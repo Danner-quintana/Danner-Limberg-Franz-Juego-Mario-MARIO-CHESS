@@ -2,7 +2,7 @@ extends Node3D
 
 const TAM_CASILLA := 0.885
 const CENTRO := Vector2(0.044, 0.163)
-const ELEVACION_SELECCION := 0.08   # 0.0 = no se eleva; 0.3 era lo que teníamos antes
+const ELEVACION_SELECCION := 0.20   # 0.0 = no se eleva; 0.3 era lo que teníamos antes
 const ALTURA_TABLERO := 0.05
 
 const MenuPausa = preload("res://menu_pausa.tscn")
@@ -50,7 +50,7 @@ const PLANTILLAS := {
 const ORDEN_FONDO := ["torre", "caballo", "alfil", "reina", "rey", "alfil", "caballo", "torre"]
 # Tinte rojo suave para distinguir al equipo 2 (mientras usan los mismos modelos)
 const TINTAR_EQUIPO2 := true
-const TINTE_EQUIPO2 := Color(1.0, 0.25, 0.25, 0.3)
+const TINTE_EQUIPO2 := Color(1.0, 0.2, 0.2, 0.5)
 
 # Duelo: vida y daño por tipo de pieza (ajústalos a tu gusto)
 const DATOS := {
@@ -83,6 +83,7 @@ var etiqueta: Label
 
 # Estado del duelo
 var duelo_en_curso: bool = false
+var id_duelo_ia: int = 0
 var duelo_terminando: bool = false
 var duelo_atacante: Dictionary = {}
 var duelo_defensor: Dictionary = {}
@@ -130,6 +131,10 @@ func _ready() -> void:
 	if ranura > 0:
 		restaurar_partida(GestorPartidas.cargar(ranura))
 		GestorPartidas.ranura_a_cargar = -1
+	if GestorPartidas.modo_juego == "solitario":
+		ia_equipo = 2
+	else:
+		ia_equipo = 0
 
 	for p in piezas:
 		p["nodo"].position = calcular_pos(p["casilla"])
@@ -233,7 +238,7 @@ func _process(_delta: float) -> void:
 	var casilla = casilla_bajo_cursor(get_viewport().get_mouse_position())
 	if casilla != Vector2i(-1, -1):
 		var pos = calcular_pos(casilla)
-		resaltador.position = Vector3(pos.x, ALTURA_TABLERO + 0.01, pos.z)
+		resaltador.position = pos + Vector3(0, 0.01, 0)
 		resaltador.visible = true
 		if seleccionada != null:
 			var jugada = tipo_de_jugada(seleccionada, casilla)
@@ -346,7 +351,10 @@ func mover_pieza(p: Dictionary, casilla: Vector2i) -> void:
 func cambiar_turno() -> void:
 	if juego_terminado:
 		return
+		
 	turno = 3 - turno   # alterna entre 1 y 2
+	
+	actualizar_camara_turno()  # Cambiar la cámara según el turno
 	actualizar_etiqueta()
 
 	if turno == ia_equipo:
@@ -394,8 +402,26 @@ func iniciar_duelo(atacante: Dictionary, defensor: Dictionary) -> void:
 	for f in luchadores:
 		var eq: int = f["pieza"]["equipo"]
 		var nombre: String = NOMBRE_TIPO.get(f["pieza"]["tipo"], "Piece")
-		hud.configurar(f["indice"], "Player " + str(eq) + "  -  " + nombre, f["vida_max"], TEXTO_CONTROLES[eq], nombre_hud(f["pieza"]))
+		var controles: String = TEXTO_CONTROLES[eq]
+		var nombre_jugador: String = "Player " + str(eq)
+
+		if GestorPartidas.modo_juego == "solitario" and eq == ia_equipo:
+			nombre_jugador = "AI - " + nombre
+			controles = "AI controlled"
+
+		hud.configurar(
+			f["indice"],
+			nombre_jugador + " - " + nombre,
+			f["vida_max"],
+			controles,
+			nombre_hud(f["pieza"])
+		)
+	
 	hud.mostrar()
+	if GestorPartidas.modo_juego == "solitario":
+		iniciar_ia_duelo()
+
+
 
 func crear_luchador(p: Dictionary, casilla: Vector2i, indice: int) -> Dictionary:
 	var datos: Dictionary = DATOS[p["tipo"]]
@@ -437,6 +463,8 @@ func tecla_en_duelo(k: int) -> void:
 	for i in 2:
 		var f: Dictionary = luchadores[i]
 		var otro: Dictionary = luchadores[1 - i]
+		if GestorPartidas.modo_juego == "solitario" and f["pieza"]["equipo"] == ia_equipo:
+			continue
 		var ctl: Dictionary = CONTROLES[f["pieza"]["equipo"]]
 		var paso := Vector2i.ZERO
 		if k == ctl["izq"]:
@@ -507,19 +535,30 @@ func recibir_dano(f: Dictionary, cantidad: int) -> void:
 		terminar_duelo(gana_equipo)
 
 func terminar_duelo(gana_equipo: int) -> void:
+	id_duelo_ia += 1
 	luchadores.clear()
 	hud.ocultar()
+
 	# Todas las piezas vuelven a su casilla del ajedrez y se muestran de nuevo
 	for p in piezas:
 		p["nodo"].visible = true
 		p["nodo"].position = calcular_pos(p["casilla"])
 		p["nodo"].rotation_degrees.y = giro_inicial(p["equipo"])
 		animador.quieto(p)
+
 	duelo_en_curso = false
 	actualizar_etiqueta()
-	resolver_duelo(duelo_atacante, duelo_defensor, duelo_atacante["equipo"] == gana_equipo)
+
+	resolver_duelo(
+		duelo_atacante,
+		duelo_defensor,
+		duelo_atacante["equipo"] == gana_equipo
+	)
+
 	if not juego_terminado:
-		Music.play("board")   # back to the board music (if the game ended, the result music plays instead)
+		Music.play("board")
+
+	actualizar_camara_turno()
 
 func resolver_duelo(atacante: Dictionary, defensor: Dictionary, gana_atacante: bool) -> void:
 	if gana_atacante:
@@ -624,16 +663,26 @@ func camino_libre(desde: Vector2i, hasta: Vector2i) -> bool:
 
 # ---------------- CUADRÍCULA ----------------
 func casilla_bajo_cursor(pos_mouse: Vector2) -> Vector2i:
-	var origen = camara.project_ray_origin(pos_mouse)
-	var direccion = camara.project_ray_normal(pos_mouse)
+	var camara_actual: Camera3D = get_viewport().get_camera_3d()
+
+	if camara_actual == null:
+		return Vector2i(-1, -1)
+
+	var origen = camara_actual.project_ray_origin(pos_mouse)
+	var direccion = camara_actual.project_ray_normal(pos_mouse)
+
 	var plano = Plane(Vector3.UP, ALTURA_TABLERO)
 	var punto = plano.intersects_ray(origen, direccion)
+
 	if punto == null:
 		return Vector2i(-1, -1)
+
 	var col = floori((punto.x - CENTRO.x) / TAM_CASILLA + 4)
 	var fila = floori((punto.z - CENTRO.y) / TAM_CASILLA + 4)
+
 	if col < 0 or col > 7 or fila < 0 or fila > 7:
 		return Vector2i(-1, -1)
+
 	return Vector2i(col, fila)
 
 func calcular_pos(c: Vector2i) -> Vector3:
@@ -656,3 +705,84 @@ func _on_play_again() -> void:
 func _on_end_main_menu() -> void:
 	get_tree().paused = false
 	get_tree().change_scene_to_file(MAIN_MENU_SCENE)
+	
+	
+func iniciar_ia_duelo() -> void:
+	id_duelo_ia += 1
+	var mi_id: int = id_duelo_ia
+
+	# Esperar un poco antes del primer movimiento
+	await get_tree().create_timer(0.7).timeout
+
+	while duelo_en_curso and not duelo_terminando and mi_id == id_duelo_ia:
+		var ia_f: Dictionary = {}
+		var jugador_f: Dictionary = {}
+
+		# Identificar al luchador de la IA y al jugador
+		for f in luchadores:
+			if f["pieza"]["equipo"] == ia_equipo:
+				ia_f = f
+			else:
+				jugador_f = f
+
+		if ia_f.is_empty() or jugador_f.is_empty():
+			return
+
+		if ia_f["vida"] <= 0 or jugador_f["vida"] <= 0:
+			return
+
+		var diferencia: Vector2i = jugador_f["casilla"] - ia_f["casilla"]
+		var distancia: int = maxi(absi(diferencia.x), absi(diferencia.y))
+
+		# Si el jugador está cerca, la IA ataca
+		if distancia == 1:
+			atacar(ia_f, jugador_f)
+
+		# Si está lejos, la IA busca acercarse
+		else:
+			var mejor_paso := Vector2i.ZERO
+			var mejor_distancia: int = distancia
+
+			# Probar las ocho direcciones posibles
+			for x in range(-1, 2):
+				for y in range(-1, 2):
+					if x == 0 and y == 0:
+						continue
+
+					var paso := Vector2i(x, y)
+					var destino: Vector2i = ia_f["casilla"] + paso
+
+					# No salir del tablero
+					if destino.x < 0 or destino.x > 7:
+						continue
+					if destino.y < 0 or destino.y > 7:
+						continue
+
+					# No intentar ocupar la casilla del jugador
+					if destino == jugador_f["casilla"]:
+						continue
+
+					var nueva_distancia: int = maxi(
+						absi(jugador_f["casilla"].x - destino.x),
+						absi(jugador_f["casilla"].y - destino.y)
+					)
+
+					# Elegir el movimiento que más acerque a la IA
+					if nueva_distancia < mejor_distancia:
+						mejor_distancia = nueva_distancia
+						mejor_paso = paso
+
+			if mejor_paso != Vector2i.ZERO:
+				mover_luchador(ia_f, jugador_f, mejor_paso)
+
+		# Pausa breve entre acciones
+		await get_tree().create_timer(0.6).timeout
+		
+func actualizar_camara_turno() -> void:
+	if duelo_en_curso or GestorPartidas.modo_juego != "multijugador":
+		return
+
+	if turno == 1:
+		$Camera3D.make_current()
+	elif turno == 2:
+		$CamaraJugador2.make_current()

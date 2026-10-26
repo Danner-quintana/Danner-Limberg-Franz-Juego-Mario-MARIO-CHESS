@@ -11,7 +11,8 @@ var titulo_ranuras: Label
 
 func _ready() -> void:
 	Music.play("menu")
-	# Fondo animado (el nodo VideoStreamPlayer "Fondo" ya no se usa)
+
+# Fondo animado
 	$Fondo.hide()
 	var fondo := FondoMenu.new()
 	add_child(fondo)
@@ -20,20 +21,32 @@ func _ready() -> void:
 	construir_menu()
 	construir_ranuras()
 
+# Botones del menú
+	$Botones/BtnNueva.text = "Single Player"
+	$Botones/BtnMultijugador.text = "Multiplayer"
+
 	$Botones/BtnNueva.pressed.connect(_on_nueva)
+	$Botones/BtnMultijugador.pressed.connect(_on_multijugador)
 	$Botones/BtnContinuar.pressed.connect(_on_continuar)
 	$Botones/BtnSalir.pressed.connect(get_tree().quit)
 	$Ranuras/BtnVolver.pressed.connect(_on_volver)
-	# Si no hay ninguna partida guardada, "Load Game" no tiene sentido
+	$Botones/BtnMultijugador.pressed.connect(_on_multijugador)
+
+# Estilos
+	EstiloMenu.boton($Botones/BtnNueva, EstiloMenu.VERDE)
+	EstiloMenu.boton($Botones/BtnMultijugador, EstiloMenu.AZUL)
+
+# Cargar partida solo si existen partidas guardadas
 	$Botones/BtnContinuar.disabled = not GestorPartidas.hay_partidas()
 
-	# Aparece suavemente
+# Aparición suave
 	$Botones.modulate.a = 0.0
 	create_tween().tween_property($Botones, "modulate:a", 1.0, 0.7)
 
 func construir_menu() -> void:
 	var botones: VBoxContainer = $Botones
 	botones.add_theme_constant_override("separation", 14)
+	
 
 	var titulo: Label = $Botones/Titulo
 	EstiloMenu.titulo(titulo, 84, EstiloMenu.DORADO)
@@ -53,6 +66,7 @@ func construir_menu() -> void:
 	EstiloMenu.boton($Botones/BtnNueva, EstiloMenu.VERDE)
 	EstiloMenu.boton($Botones/BtnContinuar, EstiloMenu.AZUL)
 	EstiloMenu.boton($Botones/BtnSalir, EstiloMenu.ROJO)
+	EstiloMenu.boton($Botones/BtnMultijugador, EstiloMenu.AZUL)
 
 func construir_ranuras() -> void:
 	var ranuras: VBoxContainer = $Ranuras
@@ -69,7 +83,15 @@ func construir_ranuras() -> void:
 
 func _on_nueva() -> void:
 	GestorPartidas.ranura_a_cargar = -1
+	GestorPartidas.modo_juego = "solitario"
 	get_tree().change_scene_to_file(ESCENA_JUEGO)
+
+	
+func _on_multijugador() -> void:
+	GestorPartidas.ranura_a_cargar = -1
+	GestorPartidas.modo_juego = "multijugador"
+	get_tree().change_scene_to_file(ESCENA_JUEGO)
+
 
 func _on_continuar() -> void:
 	$Botones.hide()

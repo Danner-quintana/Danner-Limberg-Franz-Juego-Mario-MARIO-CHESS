@@ -4,7 +4,7 @@ const MAX_RANURAS := 5
 
 # -1 = partida nueva. Si es 1..5, el juego carga esa ranura al arrancar
 var ranura_a_cargar := -1
-
+var modo_juego: String = "solitario"
 func ruta(n: int) -> String:
 	return "user://partida_%d.json" % n
 

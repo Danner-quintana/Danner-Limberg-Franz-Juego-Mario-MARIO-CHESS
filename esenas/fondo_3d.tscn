@@ -1,6 +1,6 @@
 [gd_scene format=3 uid="uid://cx4le2pws7w5p"]
 
-[ext_resource type="Texture2D" uid="uid://kb388d4aaasd" path="res://fondo para mario.webp" id="1_epu8x"]
+[ext_resource type="Texture2D" uid="uid://48xdone8jg34" path="res://modelos/namek.webp" id="1_epu8x"]
 
 [sub_resource type="PanoramaSkyMaterial" id="PanoramaSkyMaterial_7w5jd"]
 panorama = ExtResource("1_epu8x")
@@ -11,7 +11,7 @@ sky_material = SubResource("PanoramaSkyMaterial_7w5jd")
 [sub_resource type="Environment" id="Environment_3osrw"]
 background_mode = 2
 sky = SubResource("Sky_knsym")
-sky_rotation = Vector3(0.20943952, 2.6179938, 0)
+sky_rotation = Vector3(0, 0.27925268, 0)
 
 [node name="Fondo3D" type="Node3D" unique_id=1743552620]
 

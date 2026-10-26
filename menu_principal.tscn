@@ -35,11 +35,15 @@ grow_vertical = 2
 
 [node name="Titulo" type="Label" parent="Botones" unique_id=673959909]
 layout_mode = 2
-text = "MARIOPIZ"
+text = "PIZMARIO"
 
 [node name="BtnNueva" type="Button" parent="Botones" unique_id=1608437894]
 layout_mode = 2
 text = "New Game"
+
+[node name="BtnMultijugador" type="Button" parent="Botones" unique_id=36618974]
+layout_mode = 2
+text = "Multiplayer"
 
 [node name="BtnContinuar" type="Button" parent="Botones" unique_id=117849535]
 layout_mode = 2

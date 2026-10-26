@@ -25,7 +25,7 @@ func _ready() -> void:
 	paneles.append(crear_panel(fila, Color(0.3, 0.65, 1.0), false))   # jugador 1 (izquierda)
 
 	var titulo := Label.new()
-	titulo.text = "¡DUELO!"
+	titulo.text = "¡FIGTH!"
 	titulo.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	titulo.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	titulo.size_flags_vertical = Control.SIZE_SHRINK_BEGIN
@@ -110,7 +110,7 @@ func actualizar(i: int, vida: int, vida_max: int) -> void:
 		p["caja"].modulate = Color(1.0, 0.5, 0.5)
 		create_tween().tween_property(p["caja"], "modulate", Color.WHITE, 0.3)
 	create_tween().tween_property(barra, "valor", float(vida), 0.25)
-	p["vida"].text = "Vida: " + str(vida) + " / " + str(vida_max)
+	p["vida"].text = "health: " + str(vida) + " / " + str(vida_max)
 
 func mostrar() -> void:
 	visible = true
